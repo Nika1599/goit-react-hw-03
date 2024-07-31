@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import ContactList from "../ContactList/ContactList";
 import SearchBox from "../SearchBox/SearchBox";
+import ContactForm from "../ContactForm/ContactForm";
 
 const data = [
   { id: "id-1", name: "Rosie Simpson", number: "459-12-56" },
@@ -16,11 +17,24 @@ const App = () => {
   const filterContacts = contacts.filter((contact) =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
+
+  const addContact = (newContact) => {
+    setContacts((prevContact) => {
+      return [...prevContact, newContact];
+    });
+  };
+
+  const deleteContact = (contactId) => {
+    setContacts((prevContact) => {
+      return prevContact.filter((contact) => contact.id !== contactId);
+    });
+  };
   return (
     <div>
       <h1>Phonebook</h1>
+      <ContactForm onAdd={addContact} />
       <SearchBox value={filter} onFilter={setFilter} />
-      <ContactList contacts={filterContacts} />
+      <ContactList contacts={filterContacts} onDelete={deleteContact} />
     </div>
   );
 };
